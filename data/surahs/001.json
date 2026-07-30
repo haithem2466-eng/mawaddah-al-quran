@@ -1,0 +1,66 @@
+{
+  "number": 1,
+  "name_arabic": "الفاتحة",
+  "name_transliteration": "Al-Fatiha",
+  "name_meaning": "The Opening",
+  "revelation_type": "Meccan",
+  "ayah_count": 7,
+  "ayahs": [
+    {
+      "number": 1,
+      "text_uthmani": "بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ",
+      "juz": 1,
+      "hizb": 1,
+      "page": 1,
+      "sajdah": false
+    },
+    {
+      "number": 2,
+      "text_uthmani": "ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَـٰلَمِينَ",
+      "juz": 1,
+      "hizb": 1,
+      "page": 1,
+      "sajdah": false
+    },
+    {
+      "number": 3,
+      "text_uthmani": "ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ",
+      "juz": 1,
+      "hizb": 1,
+      "page": 1,
+      "sajdah": false
+    },
+    {
+      "number": 4,
+      "text_uthmani": "مَـٰلِكِ يَوْمِ ٱلدِّينِ",
+      "juz": 1,
+      "hizb": 1,
+      "page": 1,
+      "sajdah": false
+    },
+    {
+      "number": 5,
+      "text_uthmani": "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ",
+      "juz": 1,
+      "hizb": 1,
+      "page": 1,
+      "sajdah": false
+    },
+    {
+      "number": 6,
+      "text_uthmani": "ٱهْدِنَا ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ",
+      "juz": 1,
+      "hizb": 1,
+      "page": 1,
+      "sajdah": false
+    },
+    {
+      "number": 7,
+      "text_uthmani": "صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّآلِّينَ",
+      "juz": 1,
+      "hizb": 1,
+      "page": 1,
+      "sajdah": false
+    }
+  ]
+}
