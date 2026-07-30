@@ -5,9 +5,9 @@
     ],
     "target": {
       "namespace": "android_app",
-      "package_name": "app.vercel.mawaddah_al_quran.twa",
+      "package_name": "com.mawaddahalquran.app",
       "sha256_cert_fingerprints": [
-        "AD:92:22:4D:7F:21:03:B1:8B:79:C2:24:F4:3D:64:7F:F2:F6:10:6E:09:06:AB:58:D6:A3:3A:F8:59:2A:73:7B"
+        "5F:98:EB:96:83:57:01:A0:81:73:D0:BB:97:A3:A1:8D:3A:60:62:B7:08:3E:E7:EF:F3:AD:D0:B5:06:5D:D9:E2"
       ]
     }
   }
