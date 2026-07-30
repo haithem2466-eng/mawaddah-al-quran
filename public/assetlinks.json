@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "app.vercel.mawaddah_al_quran.twa",
+      "sha256_cert_fingerprints": [
+        "AD:92:22:4D:7F:21:03:B1:8B:79:C2:24:F4:3D:64:7F:F2:F6:10:6E:09:06:AB:58:D6:A3:3A:F8:59:2A:73:7B"
+      ]
+    }
+  }
+]
