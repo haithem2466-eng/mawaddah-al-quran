@@ -1,0 +1,58 @@
+{
+  "number": 109,
+  "name_arabic": "الكافرون",
+  "name_transliteration": "Al-Kafirun",
+  "name_meaning": "The Disbelievers",
+  "revelation_type": "Meccan",
+  "ayah_count": 6,
+  "ayahs": [
+    {
+      "number": 1,
+      "text_uthmani": "قُلْ يَـٰٓأَيُّهَا ٱلْكَـٰفِرُونَ",
+      "juz": 30,
+      "hizb": 60,
+      "page": 603,
+      "sajdah": false
+    },
+    {
+      "number": 2,
+      "text_uthmani": "لَآ أَعْبُدُ مَا تَعْبُدُونَ",
+      "juz": 30,
+      "hizb": 60,
+      "page": 603,
+      "sajdah": false
+    },
+    {
+      "number": 3,
+      "text_uthmani": "وَلَآ أَنتُمْ عَـٰبِدُونَ مَآ أَعْبُدُ",
+      "juz": 30,
+      "hizb": 60,
+      "page": 603,
+      "sajdah": false
+    },
+    {
+      "number": 4,
+      "text_uthmani": "وَلَآ أَنَا۠ عَابِدٌۭ مَّا عَبَدتُّمْ",
+      "juz": 30,
+      "hizb": 60,
+      "page": 603,
+      "sajdah": false
+    },
+    {
+      "number": 5,
+      "text_uthmani": "وَلَآ أَنتُمْ عَـٰبِدُونَ مَآ أَعْبُدُ",
+      "juz": 30,
+      "hizb": 60,
+      "page": 603,
+      "sajdah": false
+    },
+    {
+      "number": 6,
+      "text_uthmani": "لَكُمْ دِينُكُمْ وَلِىَ دِينِ",
+      "juz": 30,
+      "hizb": 60,
+      "page": 603,
+      "sajdah": false
+    }
+  ]
+}
