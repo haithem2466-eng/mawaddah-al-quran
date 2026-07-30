@@ -1,0 +1,334 @@
+/* ==========================================================================
+   APP SHELL LAYOUT
+   Mobile-first: bottom tab bar + slide-over drawer.
+   From tablet up: persistent side rail becomes a full side nav.
+   ========================================================================== */
+
+#app {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: var(--header-h) 1fr auto;
+  grid-template-areas:
+    "header"
+    "main"
+    "tabbar";
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* ---- Header ---- */
+.app-header {
+  grid-area: header;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  /* RTL is fixed for this app: inline-start is the physical right edge and
+     inline-end is the physical left edge, so the safe-area side matches up
+     with the correct physical inset on notched/cutout screens. */
+  padding-inline-start: calc(var(--space-4) + env(safe-area-inset-right, 0px));
+  padding-inline-end: calc(var(--space-4) + env(safe-area-inset-left, 0px));
+  padding-top: env(safe-area-inset-top, 0px);
+  box-sizing: border-box;
+  height: var(--header-h);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  backdrop-filter: saturate(1.4) blur(10px);
+}
+
+.app-header__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  font-weight: 700;
+  color: var(--accent);
+  margin-inline-end: auto;
+  text-decoration: none;
+  cursor: pointer;
+}
+.app-header__brand:hover,
+.app-header__brand:visited,
+.app-header__brand:active {
+  color: var(--accent);
+  text-decoration: none;
+}
+.app-header__brand .star-mark {
+  width: 20px;
+  height: 20px;
+  color: var(--accent-gold);
+}
+
+.app-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.menu-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  transition: background var(--dur-fast) var(--ease);
+}
+.menu-btn:hover {
+  background: var(--surface-2);
+}
+
+/* Keep the drawer toggle clickable above the open side-nav (z-index:60),
+   otherwise the drawer visually covers the button and a second tap on the
+   same spot hits the drawer panel instead of re-toggling it closed. */
+.menu-btn--drawer {
+  position: relative;
+  z-index: 70;
+}
+
+/* ---- Side navigation (drawer on mobile, rail on desktop) ---- */
+.side-nav {
+  grid-area: side;
+  position: fixed;
+  inset-inline-start: 0;
+  top: 0;
+  bottom: 0;
+  width: min(84vw, 320px);
+  background: var(--surface);
+  border-inline-end: 1px solid var(--border);
+  transform: translateX(-104%);
+  transition: transform var(--dur-med) var(--ease);
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--space-5) + env(safe-area-inset-top, 0px)) var(--space-4) calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
+  overflow-y: auto;
+}
+[dir="rtl"] .side-nav,
+html:dir(rtl) .side-nav {
+  transform: translateX(104%);
+}
+.side-nav.is-open,
+[dir="rtl"] .side-nav.is-open,
+html:dir(rtl) .side-nav.is-open {
+  transform: translateX(0);
+}
+
+.side-nav__scrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 20, 18, 0.45);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-med) var(--ease);
+  z-index: 55;
+}
+.side-nav__scrim.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.side-nav__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+}
+.side-nav__top .app-header__brand {
+  margin-bottom: 0;
+  margin-inline-end: 0;
+}
+.btn-icon.side-nav__collapse-btn {
+  display: none;
+  flex-shrink: 0;
+}
+.btn-icon.side-nav__expand-btn {
+  display: none;
+}
+.btn-icon.side-nav__close-btn {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.side-nav__link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-3);
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  font-weight: 600;
+  transition:
+    background var(--dur-fast) var(--ease),
+    color var(--dur-fast) var(--ease);
+}
+.side-nav__link:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+.side-nav__link.is-active {
+  background: var(--accent);
+  color: var(--parchment-raised, #fff);
+}
+.side-nav__link svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* ---- Main content ---- */
+main {
+  grid-area: main;
+  min-width: 0;
+  padding: var(--space-4);
+  padding-inline-start: calc(var(--space-4) + env(safe-area-inset-right, 0px));
+  padding-inline-end: calc(var(--space-4) + env(safe-area-inset-left, 0px));
+  padding-bottom: calc(var(--space-8) + env(safe-area-inset-bottom));
+}
+
+.container {
+  max-width: 72rem;
+  margin-inline: auto;
+}
+
+/* ---- Bottom tab bar (mobile) ---- */
+.tab-bar {
+  grid-area: tabbar;
+  position: sticky;
+  bottom: 0;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding-bottom: env(safe-area-inset-bottom);
+  z-index: 40;
+}
+.tab-bar__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: var(--space-2) 0 calc(var(--space-2) - 2px);
+  font-size: var(--step--1);
+  color: var(--text-muted);
+}
+.tab-bar__item svg {
+  width: 22px;
+  height: 22px;
+}
+.tab-bar__item.is-active {
+  color: var(--accent);
+}
+
+/* ---- Grids ---- */
+.grid-cards {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(clamp(150px, 40vw, 220px), 1fr)
+  );
+}
+
+/* ---- Section divider using the signature star mark ---- */
+.ornamental-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--accent-gold);
+  margin: var(--space-6) 0;
+}
+.ornamental-divider::before,
+.ornamental-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+.ornamental-divider svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* From tablet width: side nav becomes a persistent rail, header adapts */
+@media (min-width: 860px) {
+  #app {
+    grid-template-columns: var(--nav-w) 1fr;
+    grid-template-rows: var(--header-h) 1fr;
+    grid-template-areas:
+      "side header"
+      "side main";
+  }
+  .side-nav,
+  [dir="rtl"] .side-nav,
+  html:dir(rtl) .side-nav {
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100vh;
+    height: 100dvh;
+    transform: none;
+    border-inline-end: 1px solid var(--border);
+    width: auto;
+  }
+  .side-nav__scrim {
+    display: none;
+  }
+  .tab-bar {
+    display: none;
+  }
+  .menu-btn.menu-btn--drawer {
+    display: none;
+  }
+  main {
+    padding: var(--space-6) var(--space-7);
+    padding-inline-start: calc(var(--space-7) + env(safe-area-inset-right, 0px));
+    padding-inline-end: calc(var(--space-7) + env(safe-area-inset-left, 0px));
+  }
+
+  /* ---- Collapsed state: sidebar tucks away entirely, main takes full width ---- */
+  .btn-icon.side-nav__collapse-btn {
+    display: inline-flex;
+  }
+  .btn-icon.side-nav__close-btn {
+    display: none;
+  }
+  #app.nav-collapsed {
+    grid-template-columns: 0 1fr;
+  }
+  #app.nav-collapsed .side-nav {
+    width: 0;
+    min-width: 0;
+    padding-inline: 0;
+    border-inline-end: 0;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+  #app.nav-collapsed .btn-icon.side-nav__expand-btn {
+    display: inline-flex;
+  }
+}
+
+@media (min-width: 1400px) {
+  main {
+    padding: var(--space-7) var(--space-8);
+    padding-inline-start: calc(var(--space-8) + env(safe-area-inset-right, 0px));
+    padding-inline-end: calc(var(--space-8) + env(safe-area-inset-left, 0px));
+  }
+  .container {
+    max-width: 84rem;
+  }
+}
+
+/* Container query support for card internals, where available */
+@supports (container-type: inline-size) {
+  .grid-cards {
+    container-type: inline-size;
+  }
+}

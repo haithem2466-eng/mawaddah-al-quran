@@ -1,0 +1,150 @@
+/* ==========================================================================
+   DESIGN TOKENS
+   Signature motif: the Rub' el-Hizb (٭) eight-pointed star — the same mark
+   used in the margins of a printed mushaf to divide the Quran into quarters.
+   It appears sparingly as a divider, a loading glyph, and the bookmark mark,
+   tying the app's one ornamental flourish directly to the text's own
+   structure (Juz / Hizb / Rub) rather than to decoration for its own sake.
+   ========================================================================== */
+
+:root {
+  /* ---- Palette (light / "Minimal") ---- */
+  --parchment: #FAFAFA;        /* page background — clean off-white, not warm */
+  --parchment-raised: #FFFFFF; /* cards / raised surfaces — pure white */
+  --ink: #18181B;              /* primary text, near-black charcoal */
+  --ink-soft: #6B7280;         /* secondary text, neutral gray */
+  --emerald: #059669;          /* primary brand / interactive color */
+  --emerald-deep: #047857;     /* pressed / hover state */
+  --emerald-mist: #ECFDF5;     /* tinted surface, chips, hovers */
+  --gold: #B45309;             /* accent: used sparingly for the star mark / sajdah */
+  --gold-soft: #D97706;        /* accent, lighter */
+  --sand: #E4E4E7;             /* borders / dividers — neutral gray, not tan */
+  --sand-deep: #A1A1AA;
+  --danger: #DC2626;
+
+  /* ---- Semantic aliases (re-pointed per theme below) ---- */
+  --bg: var(--parchment);
+  --surface: var(--parchment-raised);
+  --surface-2: var(--emerald-mist);
+  --text: var(--ink);
+  --text-muted: var(--ink-soft);
+  --border: var(--sand);
+  --accent: var(--emerald);
+  --accent-strong: var(--emerald-deep);
+  --accent-gold: var(--gold);
+  --focus-ring: #059669;
+  --shadow-color: 220 15% 20%;
+
+  /* ---- Typography ---- */
+  --font-arabic-display: "Amiri Quran", "Scheherazade New", "Traditional Arabic", "Al Qalam Quran Majeed", serif;
+  --font-arabic-ui: "Amiri", "Scheherazade New", "Traditional Arabic", serif;
+  --font-display: "Cormorant Garamond", "Iowan Old Style", "Georgia", serif;
+  --font-ui: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+
+  --step--1: clamp(0.78rem, 0.75rem + 0.15vw, 0.86rem);
+  --step-0: clamp(0.95rem, 0.9rem + 0.25vw, 1.05rem);
+  --step-1: clamp(1.1rem, 1.02rem + 0.4vw, 1.3rem);
+  --step-2: clamp(1.35rem, 1.2rem + 0.7vw, 1.7rem);
+  --step-3: clamp(1.7rem, 1.4rem + 1.4vw, 2.3rem);
+  --step-4: clamp(2.1rem, 1.7rem + 2vw, 3rem);
+
+  /* ---- Reader-specific (overridden by user settings via JS -> CSS vars) --- */
+  --reader-font-size: 2.1rem;
+  --reader-line-height: 2.6;
+  --reader-letter-spacing: 0normal;
+  --reader-max-width: 46rem;
+  --reader-font-family: var(--font-arabic-display);
+
+  /* ---- Spacing scale ---- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+
+  /* ---- Shape / motion ---- */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-pill: 999px;
+  --ease: cubic-bezier(.4,0,.2,1);
+  --dur-fast: 140ms;
+  --dur-med: 260ms;
+  --dur-slow: 420ms;
+
+  --shadow-soft: 0 1px 2px hsl(var(--shadow-color) / 0.06), 0 8px 24px hsl(var(--shadow-color) / 0.08);
+  --shadow-lifted: 0 2px 6px hsl(var(--shadow-color) / 0.10), 0 20px 48px hsl(var(--shadow-color) / 0.16);
+
+  --header-h: calc(64px + env(safe-area-inset-top, 0px));
+  --nav-w: 264px;
+}
+
+/* ---- Dark theme ---- */
+:root[data-theme="dark"] {
+  --bg: #101112;
+  --surface: #18191B;
+  --surface-2: #212325;
+  --text: #F4F4F5;
+  --text-muted: #A1A1AA;
+  --border: #2A2C2F;
+  --accent: #34D399;
+  --accent-strong: #6EE7B7;
+  --accent-gold: #D9A441;
+  --shadow-color: 0 0% 0%;
+}
+
+/* ---- Sepia theme (optional reading-comfort mode, not the default) ---- */
+:root[data-theme="sepia"] {
+  --bg: #EFE3C8;
+  --surface: #F7EFDA;
+  --surface-2: #E6D6AE;
+  --text: #4A3B22;
+  --text-muted: #7A6640;
+  --border: #D6C093;
+  --accent: #7A5A28;
+  --accent-strong: #5C4218;
+  --accent-gold: #8C6A2F;
+  --shadow-color: 40 50% 20%;
+}
+
+/* ---- AMOLED theme ---- */
+:root[data-theme="amoled"] {
+  --bg: #000000;
+  --surface: #0A0A0A;
+  --surface-2: #161718;
+  --text: #F4F4F5;
+  --text-muted: #8E8E93;
+  --border: #1E1F21;
+  --accent: #34D399;
+  --accent-strong: #6EE7B7;
+  --accent-gold: #D9A441;
+  --shadow-color: 0 0% 0%;
+}
+
+/* ---- Custom theme (user-picked background colour) ----
+   The actual --bg/--surface/--surface-2/--border/--text/--text-muted/
+   --shadow-color values are computed in JS (js/lib/settings.js) from the
+   single colour the person picked, and set as inline styles on <html> —
+   this block only provides safe light-theme-equivalent fallbacks so
+   nothing looks broken before that JS runs. */
+:root[data-theme="custom"] {
+  --bg: var(--parchment);
+  --surface: var(--parchment-raised);
+  --surface-2: var(--emerald-mist);
+  --text: var(--ink);
+  --text-muted: var(--ink-soft);
+  --border: var(--sand);
+  --shadow-color: 220 15% 20%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

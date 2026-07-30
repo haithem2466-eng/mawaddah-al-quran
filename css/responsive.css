@@ -1,0 +1,84 @@
+/* ==========================================================================
+   RESPONSIVE REFINEMENTS
+   layout.css already handles the core app-shell breakpoint (persistent side
+   rail from ~860px). This file only adds the finer-grained adjustments:
+   small phones, landscape phones, foldables/tablets, and ultra-wide/4K.
+   ========================================================================== */
+
+/* ---- Small phones (< 360px) ---- */
+@media (max-width: 359px) {
+  :root { --nav-w: 240px; }
+  main {
+    padding: var(--space-3);
+    padding-inline-start: calc(var(--space-3) + env(safe-area-inset-right, 0px));
+    padding-inline-end: calc(var(--space-3) + env(safe-area-inset-left, 0px));
+    padding-bottom: calc(var(--space-8) + env(safe-area-inset-bottom, 0px));
+  }
+  .app-header {
+    gap: var(--space-2);
+    padding-inline-start: calc(var(--space-3) + env(safe-area-inset-right, 0px));
+    padding-inline-end: calc(var(--space-3) + env(safe-area-inset-left, 0px));
+  }
+  .app-header__brand { font-size: var(--step-1); }
+  .grid-cards { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: var(--space-3); }
+}
+
+/* ---- Short / landscape phones: reclaim vertical space ---- */
+@media (max-height: 480px) and (orientation: landscape) {
+  .tab-bar { display: none; }
+  #app {
+    grid-template-columns: 1fr;
+    grid-template-rows: var(--header-h) 1fr;
+    grid-template-areas: "header" "main";
+  }
+  main { padding-bottom: calc(var(--space-4) + env(safe-area-inset-bottom, 0px)); }
+}
+
+/* ---- Foldables (unfolded) & small tablets: a bit more breathing room
+   than mobile, but not yet the persistent side rail from layout.css ---- */
+@media (min-width: 600px) and (max-width: 859px) {
+  .grid-cards { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+  main {
+    padding: var(--space-5);
+    padding-inline-start: calc(var(--space-5) + env(safe-area-inset-right, 0px));
+    padding-inline-end: calc(var(--space-5) + env(safe-area-inset-left, 0px));
+    padding-bottom: calc(var(--space-8) + env(safe-area-inset-bottom, 0px));
+  }
+  .reader { --reader-max-width: min(var(--reader-max-width), 42rem); }
+}
+
+/* ---- Large laptops / desktop monitors ---- */
+@media (min-width: 1200px) and (max-width: 1919px) {
+  .grid-cards { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+}
+
+/* ---- Ultra-wide & 4K displays: cap line length, don't just stretch ---- */
+@media (min-width: 1920px) {
+  html { font-size: 18px; }
+  .container { max-width: 96rem; }
+  main {
+    padding: var(--space-8) var(--space-8);
+    padding-inline-start: calc(var(--space-8) + env(safe-area-inset-right, 0px));
+    padding-inline-end: calc(var(--space-8) + env(safe-area-inset-left, 0px));
+  }
+  .grid-cards { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
+}
+
+/* ---- Foldable inner (cover) screens are typically narrow + tall;
+   treat them like a small phone rather than assuming a wide viewport ---- */
+@media (max-width: 400px) and (min-aspect-ratio: 1/2) {
+  .app-header__brand .brand-text { display: none; }
+}
+
+/* ---- Coarse pointers (touch): keep tap targets comfortably large.
+   The ayah number badge is excluded — it's sized in em to match the
+   reader's font size and must stay inline with the running text. ---- */
+@media (pointer: coarse) {
+  .btn-icon, .menu-btn { min-width: 40px; min-height: 40px; }
+}
+
+/* ---- Very narrow phones: 4-across theme swatches get too cramped ---- */
+@media (max-width: 400px) {
+  .theme-swatches { grid-template-columns: repeat(2, 1fr); }
+}
+

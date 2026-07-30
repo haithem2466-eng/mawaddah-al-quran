@@ -1,0 +1,146 @@
+/* ==========================================================================
+   BASE / RESET
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  color-scheme: light;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  height: 100%;
+  /* Removes the gray/blue flash Android WebViews show on tap — links and
+     buttons already get their own hover/active feedback via CSS. */
+  -webkit-tap-highlight-color: transparent;
+}
+html[data-theme="dark"], html[data-theme="amoled"] { color-scheme: dark; }
+
+body {
+  margin: 0;
+  /* vh first as a fallback for older Android System WebView builds that
+     don't understand dvh (common in older APK wrappers); dvh overrides it
+     wherever it's supported so the layout still tracks the on-screen
+     keyboard / browser-chrome changes correctly. */
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: var(--step-0);
+  line-height: 1.5;
+  transition: background var(--dur-med) var(--ease), color var(--dur-med) var(--ease);
+  overflow-x: hidden;
+  /* Stops the rubber-band/pull-to-refresh bounce many WebView wrappers
+     (Capacitor/Cordova/TWA) otherwise show at the top and bottom edges. */
+  overscroll-behavior-y: none;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.15;
+  margin: 0 0 var(--space-3);
+  color: var(--text);
+}
+h1 { font-size: var(--step-4); }
+h2 { font-size: var(--step-3); }
+h3 { font-size: var(--step-2); }
+h4 { font-size: var(--step-1); }
+
+p { margin: 0 0 var(--space-3); }
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a, button, input[type="range"], .side-nav__link, .tab-bar__item {
+  /* Removes the ~300ms tap delay and disables double-tap-to-zoom on these
+     controls, which otherwise makes a wrapped WebView/APK feel laggy. */
+  touch-action: manipulation;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+input, select, textarea {
+  font: inherit;
+  color: inherit;
+  /* Never let a text input render smaller than 16px — below that,
+     WebViews based on iOS (and some Android skins) auto-zoom the page
+     on focus, which is jarring inside an installed app. */
+  font-size: max(16px, var(--step-0));
+}
+
+ul, ol { margin: 0; padding: 0; list-style: none; }
+
+img { display: block; max-width: 100%; }
+
+/* Default icon size. Every icon() call renders a bare <svg> with no
+   width/height attributes (only a viewBox), so without this it falls back
+   to the browser's intrinsic sizing and can render enormous inside wide
+   containers (e.g. a chevron icon inside a full-width card link). Specific
+   contexts (.btn-icon svg, .side-nav__link svg, .empty-state svg, etc.)
+   override this with their own size via a higher-specificity selector, so
+   this only acts as a fallback for icons that aren't otherwise styled. */
+svg { display: block; max-width: 100%; width: 20px; height: 20px; flex-shrink: 0; }
+
+/* Arabic text base */
+[dir="rtl"], .arabic {
+  font-family: var(--font-arabic-ui);
+  direction: rtl;
+  text-align: right;
+}
+
+/* ---- Accessibility ---- */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--space-3);
+  top: -48px;
+  background: var(--accent);
+  color: var(--parchment-raised, #fff);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm);
+  z-index: 200;
+  transition: top var(--dur-fast) var(--ease);
+}
+.skip-link:focus { top: var(--space-3); }
+
+:focus-visible {
+  outline: 2.5px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-contrast: more) {
+  :root { --border: currentColor; }
+}
+
+/* ---- Scrollbars (progressive enhancement) ---- */
+* { scrollbar-width: thin; scrollbar-color: var(--sand-deep, #999) transparent; }
+*::-webkit-scrollbar { width: 8px; height: 8px; }
+*::-webkit-scrollbar-thumb { background: var(--border); border-radius: 8px; }
+
+/* ---- Page transition ---- */
+.view-enter {
+  animation: view-fade-in var(--dur-slow) var(--ease);
+}
+@keyframes view-fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}

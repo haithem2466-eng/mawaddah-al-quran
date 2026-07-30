@@ -1,0 +1,336 @@
+/* ==========================================================================
+   READER
+   ========================================================================== */
+
+.reader {
+  max-width: var(--reader-max-width);
+  margin-inline: auto;
+}
+
+.reader__surah-header {
+  text-align: center;
+  padding: var(--space-6) var(--space-4);
+  margin-bottom: var(--space-5);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.reader__surah-header .frame-corner {
+  position: absolute;
+  width: 46px; height: 46px;
+  color: var(--accent-gold);
+  opacity: 0.55;
+}
+.reader__surah-header .frame-corner--tl { top: 10px; left: 10px; }
+.reader__surah-header .frame-corner--tr { top: 10px; right: 10px; transform: scaleX(-1); }
+.reader__surah-header .frame-corner--bl { bottom: 10px; left: 10px; transform: scaleY(-1); }
+.reader__surah-header .frame-corner--br { bottom: 10px; right: 10px; transform: scale(-1); }
+
+.reader__surah-name-ar {
+  font-family: var(--font-arabic-display);
+  font-size: clamp(2rem, 6vw, 3rem);
+  color: var(--accent-strong);
+  margin-bottom: var(--space-2);
+}
+.reader__surah-name-en { font-family: var(--font-display); font-size: var(--step-2); color: var(--text); }
+.reader__surah-meta { color: var(--text-muted); font-size: var(--step--1); margin-top: var(--space-2); }
+
+.bismillah {
+  text-align: center;
+  font-family: var(--font-arabic-display);
+  font-size: clamp(1.5rem, 4.5vw, 2.1rem);
+  color: var(--text);
+  margin: var(--space-5) 0;
+}
+
+.ayah-flow {
+  font-family: var(--reader-font-family);
+  font-size: var(--reader-font-size);
+  line-height: var(--reader-line-height);
+  letter-spacing: var(--reader-letter-spacing);
+  direction: rtl;
+  text-align: justify;
+  text-align-last: right;
+  color: var(--text);
+  /* Ayah markers can land right at the edge of the reading column (e.g. an
+     ayah number at the end of a wrapped line, or right at the page edge).
+     reader.js's positionPopover() clamps the popover back within
+     window.innerWidth for that case (see --popover-shift below), so the
+     popover only needs to stay inside the *screen*, not inside this
+     narrower column. This container used to also set overflow-x:hidden as
+     an extra safety net against a mis-measured clamp widening the page and
+     revealing the off-canvas side-nav — but that clipped the popover
+     against this column's own edge before the JS clamp ever got a chance
+     to matter, cutting it off on ayahs near either side of the page.
+     body already has overflow-x:hidden (see base.css) as the real guard
+     against the side-nav reveal, so it's safe to leave this unclipped. */
+}
+
+.ayah {
+  /* Continuous mushaf-style flow: each ayah is an inline run of text so
+     the whole surah reads as one justified block, exactly like a printed
+     page, instead of separate boxed rows. */
+  display: inline;
+  position: relative;
+  scroll-margin-top: calc(var(--header-h) + var(--space-4));
+  transition: background var(--dur-med) var(--ease);
+  border-radius: var(--radius-sm);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.ayah.is-highlighted,
+.ayah.is-open {
+  background: var(--surface-2);
+  box-shadow: 0 0 0 4px var(--surface-2);
+}
+
+.ayah__text { }
+
+/* The number marker sits inline in the text flow; the action popover is
+   anchored to it and only appears on hover (desktop) or tap (any device),
+   so the reading view stays clean by default. */
+.ayah__marker {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.ayah__number-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.7em;
+  height: 1.7em;
+  font-size: 0.55em;
+  font-family: var(--font-ui);
+  color: var(--accent-strong);
+  position: relative;
+  vertical-align: middle;
+  margin-inline: 0.35em;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 50%;
+}
+.ayah__number-badge:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.ayah__number-badge svg { position: absolute; inset: 0; width: 100%; height: 100%; color: var(--accent-gold); opacity: .5; }
+.ayah__number-badge span { position: relative; z-index: 1; }
+
+.ayah__sajdah-icon {
+  display: inline-flex;
+  color: var(--accent-gold);
+  width: 0.85em;
+  margin-inline-start: 0.15em;
+  vertical-align: middle;
+}
+.ayah__sajdah-icon svg { width: 100%; height: 100%; }
+
+.ayah__popover {
+  /* Fixed (not absolute) on purpose: JS sets exact left/bottom pixel
+     coordinates from the marker's on-screen position (see positionPopover()
+     in page-reader.js). Because a fixed element's containing block is the
+     viewport itself, no ancestor's overflow can ever clip it — unlike
+     absolute positioning, which stays subject to whichever scrollable/
+     clipped ancestor box it happens to be measured against. */
+  position: fixed;
+  transform: scale(0.94) translateY(6px);
+  transform-origin: bottom center;
+  display: flex;
+  gap: 2px;
+  padding: 4px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-lifted);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+  z-index: 20;
+  white-space: nowrap;
+}
+.ayah__popover::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  /* --popover-arrow-left is a px offset (set by JS) pointing at the
+     marker's actual center, since the popover box itself may have been
+     shifted away from that center to stay on-screen. */
+  left: var(--popover-arrow-left, 50%);
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--border);
+}
+.ayah__marker:hover .ayah__popover,
+.ayah__marker:focus-within .ayah__popover,
+.ayah.is-open .ayah__popover {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  pointer-events: auto;
+}
+.ayah__popover .btn-icon { width: 34px; height: 34px; }
+
+.ayah__translation {
+  display: none;
+}
+
+/* ---- Translation mode: switch from continuous flow to one block per
+   ayah, each with its own action row and interlinear translation, since
+   a running paragraph doesn't work once English lines are interleaved. ---- */
+.reader[data-show-translation="true"] .ayah-flow {
+  text-align: right;
+  text-align-last: right;
+}
+.reader[data-show-translation="true"] .ayah {
+  display: block;
+  padding: var(--space-5) var(--space-3);
+  border-bottom: 1px dashed var(--border);
+}
+.reader[data-show-translation="true"] .ayah.has-sajdah { border-inline-start: 3px solid var(--accent-gold); }
+.reader[data-show-translation="true"] .ayah__translation {
+  display: block;
+  font-family: var(--font-ui);
+  font-size: var(--step-0);
+  color: var(--text-muted);
+  direction: ltr;
+  text-align: left;
+  margin-top: var(--space-3);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--border);
+}
+
+/* ---- Floating reader toolbar ---- */
+.reader-toolbar {
+  position: sticky;
+  top: var(--header-h);
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  justify-content: space-between;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: var(--space-2) var(--space-3);
+  margin-bottom: var(--space-4);
+  box-shadow: var(--shadow-soft);
+  overflow-x: auto;
+}
+
+/* ---- Single-page (mushaf) reader ---- */
+.reader-toolbar .btn-icon:disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+.page-reader__context {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+  font-family: var(--font-ui);
+  font-size: var(--step--1);
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.page-viewport {
+  max-width: var(--reader-max-width);
+  margin-inline: auto;
+}
+
+@keyframes page-turn-from-start {
+  from { opacity: 0; transform: translateX(-14px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes page-turn-from-end {
+  from { opacity: 0; transform: translateX(14px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.page-viewport.page-turn-next .reader,
+.page-viewport.page-turn-next .empty-state { animation: page-turn-from-end .22s var(--ease); }
+.page-viewport.page-turn-prev .reader,
+.page-viewport.page-turn-prev .empty-state { animation: page-turn-from-start .22s var(--ease); }
+
+/* Compact surah title card that can appear at the top of a page, or
+   mid-page when a surah begins partway through (matches how a printed
+   mushaf marks a new surah wherever it happens to fall). */
+.surah-banner {
+  text-align: center;
+  padding: var(--space-4) var(--space-3);
+  margin: var(--space-2) 0 var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.surah-banner .frame-corner {
+  position: absolute;
+  width: 32px; height: 32px;
+  color: var(--accent-gold);
+  opacity: 0.55;
+}
+.surah-banner .frame-corner--tl { top: 8px; left: 8px; }
+.surah-banner .frame-corner--tr { top: 8px; right: 8px; transform: scaleX(-1); }
+.surah-banner .frame-corner--bl { bottom: 8px; left: 8px; transform: scaleY(-1); }
+.surah-banner .frame-corner--br { bottom: 8px; right: 8px; transform: scale(-1); }
+.surah-banner__name {
+  font-family: var(--font-arabic-display);
+  font-size: clamp(1.5rem, 5vw, 2.25rem);
+  color: var(--accent-strong);
+}
+.surah-banner__meta { color: var(--text-muted); font-size: var(--step--1); margin-top: var(--space-1); }
+
+/* ---- Continuous-scroll mode: pages stacked one below another ---- */
+.page-section + .page-section {
+  margin-top: var(--space-6);
+  padding-top: var(--space-6);
+  border-top: 1px dashed var(--border);
+}
+.scroll-sentinel {
+  height: 1px;
+}
+
+/* Page number, printed at the bottom of every page like a physical mushaf. */
+.page-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  margin: var(--space-6) 0 var(--space-4);
+  color: var(--text-muted);
+  font-family: var(--font-ui);
+}
+.page-footer__juz { font-size: var(--step--1); }
+.page-footer__number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.4em;
+  height: 2.4em;
+  padding: 0 .3em;
+  border-radius: 50%;
+  border: 1px solid var(--accent-gold);
+  color: var(--accent-strong);
+  font-size: var(--step-0);
+  font-weight: 600;
+}
+
+/* ---- Missing-data notice (surahs without full verified text yet) ---- */
+.data-pending-notice {
+  border: 1px dashed var(--accent-gold);
+  background: var(--surface-2);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  text-align: center;
+  color: var(--text-muted);
+}
+.data-pending-notice code {
+  background: var(--bg);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+}

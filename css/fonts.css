@@ -1,0 +1,68 @@
+/* ==========================================================================
+   SELF-HOSTED FONTS
+   The app must work 100% offline, so fonts cannot be pulled from Google Fonts
+   or any CDN at runtime. Drop the woff2 files listed below into /fonts/ and
+   these @font-face rules will pick them up automatically. Until then, the
+   font stacks in variables.css fall back to serif system fonts, so the app
+   still looks intentional with zero extra setup.
+
+   All four families are open-source / SIL Open Font License and free to
+   redistribute inside this app:
+     - Amiri & Amiri Quran ......... https://github.com/aliftype/amiri
+     - Scheherazade New ............ https://software.sil.org/scheherazade/
+     - Cormorant Garamond .......... https://github.com/CatharsisFonts/Cormorant
+     - Inter ....................... https://github.com/rsms/inter
+   ========================================================================== */
+
+@font-face {
+  font-family: "Amiri Quran";
+  src: url("../fonts/AmiriQuran-Regular.woff2") format("woff2");
+  font-display: swap;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Amiri";
+  src: url("../fonts/Amiri-Regular.woff2") format("woff2");
+  font-display: swap;
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Amiri";
+  src: url("../fonts/Amiri-Bold.woff2") format("woff2");
+  font-display: swap;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "Scheherazade New";
+  src: url("../fonts/ScheherazadeNew-Regular.woff2") format("woff2");
+  font-display: swap;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Cormorant Garamond";
+  src: url("../fonts/CormorantGaramond-Regular.woff2") format("woff2");
+  font-display: swap;
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Cormorant Garamond";
+  src: url("../fonts/CormorantGaramond-SemiBold.woff2") format("woff2");
+  font-display: swap;
+  font-weight: 600;
+}
+@font-face {
+  font-family: "Cormorant Garamond";
+  src: url("../fonts/CormorantGaramond-Bold.woff2") format("woff2");
+  font-display: swap;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("../fonts/Inter-Variable.woff2") format("woff2-variations");
+  font-display: swap;
+  font-weight: 100 900;
+}

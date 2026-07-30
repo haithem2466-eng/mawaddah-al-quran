@@ -1,0 +1,107 @@
+{
+  "id": "/",
+  "name": "مَوَدَّةُ القُرْآنِ",
+  "short_name": "مَوَدَّةُ",
+  "description": "مَوَدَّةُ القُرْآنِ: تطبيق القرآن الكريم كاملًا بخط عثماني واضح، يعمل بالكامل بدون اتصال بالإنترنت. يشمل بحثًا سريعًا داخل الآيات، تصفحًا بالسور والأجزاء والأحزاب وصفحات المصحف، علامات مرجعية، وملاحظات شخصية — واجهة بسيطة وسريعة لتلاوة وحفظ ومراجعة القرآن الكريم في أي وقت.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#F6F1E4",
+  "theme_color": "#1F5F52",
+  "dir": "rtl",
+  "lang": "ar",
+  "categories": [
+    "books",
+    "education",
+    "lifestyle"
+  ],
+  "icons": [
+    {
+      "src": "Logo.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "Logo.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "Logo.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "Logo.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "Logo.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "Logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "Logo.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "Logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "Logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "متابعة القراءة",
+      "url": "./index.html#/",
+      "icons": [
+        {
+          "src": "icons/icon-96.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "البحث",
+      "url": "./index.html#/search",
+      "icons": [
+        {
+          "src": "icons/icon-96.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "العلامات المرجعية",
+      "url": "./index.html#/bookmarks",
+      "icons": [
+        {
+          "src": "icons/icon-96.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
+}
