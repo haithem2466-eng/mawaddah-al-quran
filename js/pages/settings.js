@@ -22,7 +22,8 @@ const THEME_PREVIEW = {
 };
 
 export async function renderSettingsPage(root) {
-  const currentTheme = document.documentElement.getAttribute("data-theme") || "light";
+  const currentTheme =
+    document.documentElement.getAttribute("data-theme") || "light";
   const reader = await loadReaderSettings();
   const customColor = await getCustomThemeColor();
   const presetThemes = THEMES.filter((t) => t !== "custom");
@@ -38,7 +39,7 @@ export async function renderSettingsPage(root) {
         <button class="theme-swatch ${t === currentTheme ? "is-active" : ""}" data-theme="${t}">
           <div class="theme-swatch__preview" style="background:${THEME_PREVIEW[t].bg}; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:${THEME_PREVIEW[t].fg};"></div>
           <span>${THEME_LABELS_AR[t]}</span>
-        </button>`
+        </button>`,
         )
         .join("")}
       <label class="theme-swatch theme-swatch--custom ${currentTheme === "custom" ? "is-active" : ""}" data-role="custom-swatch">
@@ -64,7 +65,7 @@ export async function renderSettingsPage(root) {
             ${icon(m === "paged" ? "book" : "chevronDown")}
           </div>
           <span>${READING_MODE_LABELS_AR[m]}</span>
-        </button>`
+        </button>`,
       ).join("")}
     </div>
     <p style="color:var(--text-muted); font-size:var(--step--1); margin-top:.5rem;">
@@ -105,8 +106,7 @@ export async function renderSettingsPage(root) {
 
     <div class="ornamental-divider">${icon("star")}</div>
 
-    <h3>التطبيق</h3>
-    <button class="btn btn-ghost" data-role="install-btn" hidden style="margin-bottom:1rem;">${icon("home")} تثبيت التطبيق على الشاشة الرئيسية</button>
+    
     <div class="field">
       <button class="btn btn-ghost" data-role="clear-data">مسح العلامات المرجعية والملاحظات وسجل القراءة</button>
     </div>
@@ -121,7 +121,9 @@ export async function renderSettingsPage(root) {
   qsa('[data-role="themes"] button.theme-swatch', root).forEach((btn) => {
     btn.addEventListener("click", async () => {
       await applyTheme(btn.dataset.theme);
-      themeSwatches().forEach((b) => b.classList.toggle("is-active", b === btn));
+      themeSwatches().forEach((b) =>
+        b.classList.toggle("is-active", b === btn),
+      );
     });
   });
 
@@ -131,25 +133,48 @@ export async function renderSettingsPage(root) {
     const hex = e.target.value;
     customPreview.style.background = hex;
     await applyCustomThemeColor(hex);
-    themeSwatches().forEach((b) => b.classList.toggle("is-active", b === customSwatch));
+    themeSwatches().forEach((b) =>
+      b.classList.toggle("is-active", b === customSwatch),
+    );
   });
 
   qsa('[data-role="reading-modes"] button', root).forEach((btn) => {
     btn.addEventListener("click", async () => {
       await applyReaderSettings({ readingMode: btn.dataset.readingMode });
-      qsa('[data-role="reading-modes"] button', root).forEach((b) => b.classList.toggle("is-active", b === btn));
+      qsa('[data-role="reading-modes"] button', root).forEach((b) =>
+        b.classList.toggle("is-active", b === btn),
+      );
     });
   });
 
-  qs('[data-role="font-family"]', root).addEventListener("change", (e) => applyReaderSettings({ fontFamily: e.target.value }));
-  qs('[data-role="font-size"]', root).addEventListener("input", (e) => applyReaderSettings({ fontSize: Number(e.target.value) }));
-  qs('[data-role="line-height"]', root).addEventListener("input", (e) => applyReaderSettings({ lineHeight: Number(e.target.value) }));
-  qs('[data-role="letter-spacing"]', root).addEventListener("input", (e) => applyReaderSettings({ letterSpacing: Number(e.target.value) }));
-  qs('[data-role="reading-width"]', root).addEventListener("input", (e) => applyReaderSettings({ readingWidth: Number(e.target.value) }));
+  qs('[data-role="font-family"]', root).addEventListener("change", (e) =>
+    applyReaderSettings({ fontFamily: e.target.value }),
+  );
+  qs('[data-role="font-size"]', root).addEventListener("input", (e) =>
+    applyReaderSettings({ fontSize: Number(e.target.value) }),
+  );
+  qs('[data-role="line-height"]', root).addEventListener("input", (e) =>
+    applyReaderSettings({ lineHeight: Number(e.target.value) }),
+  );
+  qs('[data-role="letter-spacing"]', root).addEventListener("input", (e) =>
+    applyReaderSettings({ letterSpacing: Number(e.target.value) }),
+  );
+  qs('[data-role="reading-width"]', root).addEventListener("input", (e) =>
+    applyReaderSettings({ readingWidth: Number(e.target.value) }),
+  );
 
   qs('[data-role="clear-data"]', root).addEventListener("click", async () => {
-    if (!confirm("سيؤدي هذا إلى حذف جميع العلامات المرجعية والملاحظات وسجل القراءة من هذا الجهاز. المتابعة؟")) return;
-    await Promise.all([db.clear("bookmarks"), db.clear("notes"), db.clear("lastRead")]);
+    if (
+      !confirm(
+        "سيؤدي هذا إلى حذف جميع العلامات المرجعية والملاحظات وسجل القراءة من هذا الجهاز. المتابعة؟",
+      )
+    )
+      return;
+    await Promise.all([
+      db.clear("bookmarks"),
+      db.clear("notes"),
+      db.clear("lastRead"),
+    ]);
     showToast("تم مسح بياناتك الشخصية");
   });
 }
